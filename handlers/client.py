@@ -6,4 +6,4 @@ async def echo_send(message: types.Message):
 
 
 async def register_handler_client(dp_1: Dispatcher):
-    dp_1.register_message_handler(echo_send())
+    dp_1.register_message_handler(echo_send)
