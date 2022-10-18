@@ -1,2 +1,4 @@
 aiogram==2.22.2
 python-dotenv==0.20.0
+pandas==1.5.0
+pyxlsb==1.0.10
