@@ -9,16 +9,16 @@ async def echo_send(message: types.Message):
 
 
 async def item_filter(message: types.Message):
-    item = int(message)
+    item = int(message.text)
     exped = read_exped.exped
     result = read_exped.filter(df=exped, item=item)
-    order = result.loc[0, ['Индекс RTB']]
-    await message.reply(order)
+    await bot.send_message(message.from_user.id, result)
+
 
 async def print_result(message: types.Message):
-    await bot.send_message(message.from_user.id, text="привет")
+    pass
 
 
 def register_handler_client(dp_1: Dispatcher):
-    #dp_1.register_message_handler(item_filter)
-    dp_1.register_message_handler(echo_send)
+    dp_1.register_message_handler(item_filter)
+
