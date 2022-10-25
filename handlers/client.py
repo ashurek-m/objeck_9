@@ -14,6 +14,7 @@ async def item_filter(message: types.Message):
     result = read_exped.filter(df=exped, item=item)
     text = f'Заказ: {result[0]}\n' \
            f'Деталь: {result[1]}\n' \
+           f'Кол-во: {result[2]}\n' \
            f'Дата отгрузки: {result[3]}\n' \
            f'ТП: {result[5]}\n' \
            f'Примечания: {result[4]}\n'
