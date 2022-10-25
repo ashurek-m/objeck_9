@@ -12,7 +12,12 @@ async def item_filter(message: types.Message):
     item = int(message.text)
     exped = read_exped.exped
     result = read_exped.filter(df=exped, item=item)
-    await bot.send_message(message.from_user.id, result)
+    text = f'Заказ: {result[0]}\n' \
+           f'Деталь: {result[1]}\n' \
+           f'Дата отгрузки: {result[3]}\n' \
+           f'ТП: {result[5]}\n' \
+           f'Примечания: {result[4]}\n'
+    await bot.send_message(message.from_user.id, text)
 
 
 async def print_result(message: types.Message):

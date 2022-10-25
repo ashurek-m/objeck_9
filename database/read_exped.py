@@ -16,10 +16,14 @@ def filter(df, item: int):
                               'Примечания',
                               'Отметка о выполнении',
                               'Потенциальные проблемы',
-                              'N° ITEM'
+                              'N° ITEM',
+                              'Приоритет'
                               ]].astype({'Индекс RTB': 'int64', 'Кол-во': 'int64', 'N° ITEM': 'int64'})
-    inform = df_item.loc[0, ['Примечания']].values
-    return inform[0]
-
-
-#print(filter(exped, 518388))
+    inform = df_item.loc[0, ['Индекс RTB',
+                             'Наименование детали',
+                             'Кол-во',
+                             'Приоритет',
+                             'Примечания',
+                             'Потенциальные проблемы'
+                             ]].values
+    return inform
