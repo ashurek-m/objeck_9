@@ -30,7 +30,7 @@ def filter_item(df, item: int):
 
 
 def filter_detal(df, detal: str):
-    df_t = df['Наименование детали'].isin([detal])
+    df_t = df['Наименование детали'].str.contains(detal, regex=True)
     df['search'] = df_t
     df_detal = df[df['search'] == True]
     df_detal = df_detal.loc[:, ['Индекс RTB',
