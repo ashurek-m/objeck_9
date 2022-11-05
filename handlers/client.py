@@ -1,11 +1,11 @@
 from aiogram import types, Dispatcher
 from database import read_exped
-from create_bot import bot
+from create_bot import bot, dp
 from keyboards.client_kb import kb_client
 
 
 async def command_start(message: types.Message):
-    await bot.send_message(chat_id=message.from_user.id, text='Привет')
+    await bot.send_message(chat_id=message.from_user.id, text='Hello', reply_markup=kb_client)
 
 
 async def item_filter(message: types.Message):
@@ -33,7 +33,12 @@ async def detal_filter(message: types.Message):
         await bot.send_message(message.from_user.id, text=text, parse_mode='Markdown')
 
 
+async def my_id(message:types.Message):
+    await bot.send_message(chat_id=message.from_user.id, text=f'Ваш id {message.from_user.id}')
+
+
 def register_handler_client(dp_1: Dispatcher):
-    dp_1.register_message_handler(command_start, commands=['start, help'])
-    dp_1.register_message_handler(item_filter)
+    dp_1.register_message_handler(command_start, commands=['start', 'help'])
+    dp_1.register_message_handler(my_id, commands=['id'])
+    dp_1.register_message_handler(item_filter, commands=['item'])
 
