@@ -2,6 +2,7 @@ from aiogram import types, Dispatcher
 from database import read_exped
 from create_bot import bot, dp
 from keyboards.client_kb import kb_client
+from aiogram.dispatcher.filters import Text
 
 
 async def command_start(message: types.Message):
@@ -37,8 +38,22 @@ async def my_id(message:types.Message):
     await bot.send_message(chat_id=message.from_user.id, text=f'Ваш id {message.from_user.id}')
 
 
+@dp.callback_query_handler(Text(startswith='but'))
+async def cnopka(callback_query: types.CallbackQuery):
+    res = callback_query.data.split('t')[1]
+    if res == '1':
+        await callback_query.message.answer('Нажата первая кнопка')
+        await callback_query.answer()
+    elif res == '2':
+        await callback_query.message.answer('Нажата вторая кнопка')
+        await callback_query.answer()
+    elif res == '3':
+        await callback_query.message.answer('Нажата третья кнопка')
+        await callback_query.answer()
+
+
 def register_handler_client(dp_1: Dispatcher):
     dp_1.register_message_handler(command_start, commands=['start', 'help'])
-    dp_1.register_message_handler(my_id, commands=['id'])
-    dp_1.register_message_handler(item_filter, commands=['item'])
+    # dp_1.register_message_handler(my_id, commands=['id'])
+    # dp_1.register_message_handler(item_filter, commands=['item'])
 
