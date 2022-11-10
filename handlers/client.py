@@ -34,12 +34,12 @@ async def detal_filter(message: types.Message):
         await bot.send_message(message.from_user.id, text=text, parse_mode='Markdown')
 
 
-async def my_id(message:types.Message):
+async def my_id(message: types.Message):
     await bot.send_message(chat_id=message.from_user.id, text=f'Ваш id {message.from_user.id}')
 
 
 @dp.callback_query_handler(Text(startswith='but'))
-async def cnopka(callback_query: types.CallbackQuery):
+async def button_inline(callback_query: types.CallbackQuery):
     res = callback_query.data.split('t')[1]
     if res == '1':
         await callback_query.message.answer('Нажата первая кнопка')
@@ -56,4 +56,3 @@ def register_handler_client(dp_1: Dispatcher):
     dp_1.register_message_handler(command_start, commands=['start', 'help'])
     # dp_1.register_message_handler(my_id, commands=['id'])
     # dp_1.register_message_handler(item_filter, commands=['item'])
-
