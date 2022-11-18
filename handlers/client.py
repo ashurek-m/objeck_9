@@ -3,6 +3,14 @@ from database import read_exped
 from create_bot import bot, dp
 from keyboards.client_kb import kb_client
 from aiogram.dispatcher.filters import Text
+from aiogram.dispatcher import FSMContext
+from aiogram.dispatcher.filters.state import State, StatesGroup
+
+
+class FSMAdmin(StatesGroup):
+    item = State()
+    detal = State()
+    order = State()
 
 
 async def command_start(message: types.Message):
@@ -38,11 +46,12 @@ async def my_id(message: types.Message):
     await bot.send_message(chat_id=message.from_user.id, text=f'Ваш id {message.from_user.id}')
 
 
-@dp.callback_query_handler(Text(startswith='but'))
+@dp.callback_query_handler(Text(startswith='but'), state=None)
 async def button_inline(callback_query: types.CallbackQuery):
     res = callback_query.data.split('t')[1]
     if res == '1':
-        await callback_query.message.answer('Нажата первая кнопка')
+        await callback_query.message.answer('Выбран поиск по item')
+        await FSMAdmin.item.set()
         await callback_query.answer()
     elif res == '2':
         await callback_query.message.answer('Нажата вторая кнопка')
@@ -51,8 +60,15 @@ async def button_inline(callback_query: types.CallbackQuery):
         await callback_query.message.answer('Нажата третья кнопка')
         await callback_query.answer()
 
+'''
+@dp.message_handler(state=FSMAdmin.name)
+async def save_data(message: types.Message, state: FSMContext):
+    async with state.proxy() as data:
+        data['name'] =
+'''
+
 
 def register_handler_client(dp_1: Dispatcher):
     dp_1.register_message_handler(command_start, commands=['start', 'help'])
-    # dp_1.register_message_handler(my_id, commands=['id'])
-    # dp_1.register_message_handler(item_filter, commands=['item'])
+    dp_1.register_message_handler(my_id, commands=['id'])
+    dp_1.register_message_handler(item_filter, state=FSMAdmin.item)
