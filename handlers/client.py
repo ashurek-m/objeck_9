@@ -1,7 +1,7 @@
 from aiogram import types, Dispatcher
 from database import read_exped
 from create_bot import bot, dp
-from keyboards.client_kb import kb_client
+from keyboards.client_kb import kb_client, kb2_client
 from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
@@ -9,7 +9,7 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 
 class FSMAdmin(StatesGroup):
     item = State()
-    detal = State()
+    part = State()
     order = State()
 
 
@@ -54,21 +54,17 @@ async def button_inline(callback_query: types.CallbackQuery):
         await FSMAdmin.item.set()
         await callback_query.answer()
     elif res == '2':
-        await callback_query.message.answer('Нажата вторая кнопка')
+        await callback_query.message.answer('Поиск по номеру детали')
+        await FSMAdmin.part.set()
         await callback_query.answer()
     elif res == '3':
         await callback_query.message.answer('Нажата третья кнопка')
+        await FSMAdmin.order.set()
         await callback_query.answer()
-
-'''
-@dp.message_handler(state=FSMAdmin.name)
-async def save_data(message: types.Message, state: FSMContext):
-    async with state.proxy() as data:
-        data['name'] =
-'''
 
 
 def register_handler_client(dp_1: Dispatcher):
     dp_1.register_message_handler(command_start, commands=['start', 'help'])
     dp_1.register_message_handler(my_id, commands=['id'])
     dp_1.register_message_handler(item_filter, state=FSMAdmin.item)
+    dp_1.register_message_handler(detal_filter, state=FSMAdmin.part)

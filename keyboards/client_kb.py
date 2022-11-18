@@ -9,3 +9,9 @@ b3 = InlineKeyboardButton('Поиск по заказу', callback_data='but3')
 kb_client = InlineKeyboardMarkup(row_width=2).add(b1)
 kb_client.add(b2)
 kb_client.add(b3)
+
+kb2_client = ReplyKeyboardMarkup(resize_keyboard=True)
+
+b21 = KeyboardButton('/start')
+
+kb2_client.add(b21)
