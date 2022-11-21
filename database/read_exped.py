@@ -51,3 +51,27 @@ def filter_detal(df, detal: str):
                               'Потенциальные проблемы'
                               ]].values
     return inform
+
+
+def filter_order(df, order):
+    df_t = df['Индекс RTB'].astype(dtype='str').str.contains(order, regex=True)
+    df['search'] = df_t
+    df_order = df[df['search'] == True]
+    df_order = df_order.loc[:, ['Индекс RTB',
+                                'Наименование детали',
+                                'Кол-во',
+                                'Неделя Отгрузки',
+                                'Примечания',
+                                'Отметка о выполнении',
+                                'Потенциальные проблемы',
+                                'N° ITEM',
+                                'Приоритет'
+                                ]].astype({'Индекс RTB': 'int64', 'Кол-во': 'int64', 'N° ITEM': 'int64'})
+    inform = df_order.loc[:, ['Индекс RTB',
+                              'Наименование детали',
+                              'Кол-во',
+                              'Приоритет',
+                              'Примечания',
+                              'Потенциальные проблемы'
+                              ]].values
+    return inform

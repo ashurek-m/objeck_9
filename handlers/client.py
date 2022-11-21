@@ -17,7 +17,7 @@ async def command_start(message: types.Message):
     await bot.send_message(chat_id=message.from_user.id, text='Hello', reply_markup=kb_client)
 
 
-async def item_filter(message: types.Message):
+async def item_filter(message: types.Message, state: FSMContext):
     item = int(message.text)
     result = read_exped.filter_item(df=read_exped.exped, item=item)
     text = f'Заказ: *{result[0]}*\n' \
@@ -27,9 +27,10 @@ async def item_filter(message: types.Message):
            f'ТП: *{result[5]}*\n' \
            f'Примечания: *{result[4]}*\n'
     await bot.send_message(message.from_user.id, text=text, parse_mode='Markdown')
+    await state.finish()
 
 
-async def detal_filter(message: types.Message):
+async def detal_filter(message: types.Message, state: FSMContext):
     numder_detal = message.text
     result = read_exped.filter_detal(df=read_exped.exped, detal=numder_detal)
     for i in range(len(result)):
@@ -40,10 +41,33 @@ async def detal_filter(message: types.Message):
                f'ТП: *{result[i][5]}*\n' \
                f'Примечания: *{result[i][4]}*\n'
         await bot.send_message(message.from_user.id, text=text, parse_mode='Markdown')
+        await state.finish()
+
+
+async def order(message: types.Message, state: FSMContext):
+    numder_order = message.text
+    result = read_exped.filter_order(df=read_exped.exped, order=numder_order)
+    for i in range(len(result)):
+        text = f'Заказ: *{result[i][0]}*\n' \
+               f'Деталь: *{result[i][1]}*\n' \
+               f'Кол-во: *{result[i][2]}*\n' \
+               f'Дата отгрузки: *{result[i][3]}*\n' \
+               f'ТП: *{result[i][5]}*\n' \
+               f'Примечания: *{result[i][4]}*\n'
+        await bot.send_message(message.from_user.id, text=text, parse_mode='Markdown')
+        await state.finish()
 
 
 async def my_id(message: types.Message):
     await bot.send_message(chat_id=message.from_user.id, text=f'Ваш id {message.from_user.id}')
+
+
+async def cancel_handler(message: types.Message, state: FSMContext):
+    current_state = await state.get_state()
+    if current_state is None:
+        return
+    await state.finish()
+    await message.answer('OK')
 
 
 @dp.callback_query_handler(Text(startswith='but'), state=None)
@@ -58,13 +82,14 @@ async def button_inline(callback_query: types.CallbackQuery):
         await FSMAdmin.part.set()
         await callback_query.answer()
     elif res == '3':
-        await callback_query.message.answer('Нажата третья кнопка')
+        await callback_query.message.answer('Поиск по номеру заказ')
         await FSMAdmin.order.set()
         await callback_query.answer()
 
 
 def register_handler_client(dp_1: Dispatcher):
-    dp_1.register_message_handler(command_start, commands=['start', 'help'])
+    dp_1.register_message_handler(command_start, commands=['start', 'help'], state=None)
     dp_1.register_message_handler(my_id, commands=['id'])
     dp_1.register_message_handler(item_filter, state=FSMAdmin.item)
     dp_1.register_message_handler(detal_filter, state=FSMAdmin.part)
+    dp_1.register_message_handler(order, state=FSMAdmin.order)
