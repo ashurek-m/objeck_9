@@ -33,29 +33,35 @@ async def item_filter(message: types.Message, state: FSMContext):
 async def detal_filter(message: types.Message, state: FSMContext):
     numder_detal = message.text
     result = read_exped.filter_detal(df=read_exped.exped, detal=numder_detal)
+    messages = ''
     for i in range(len(result)):
         text = f'Заказ: *{result[i][0]}*\n' \
                f'Деталь: *{result[i][1]}*\n' \
                f'Кол-во: *{result[i][2]}*\n' \
                f'Дата отгрузки: *{result[i][3]}*\n' \
                f'ТП: *{result[i][5]}*\n' \
-               f'Примечания: *{result[i][4]}*\n'
-        await bot.send_message(message.from_user.id, text=text, parse_mode='Markdown')
-        await state.finish()
+               f'Примечания: *{result[i][4]}*\n' \
+               f'\n'
+        messages += text
+    await bot.send_message(message.from_user.id, text=messages, parse_mode='Markdown')
+    await state.finish()
 
 
 async def order(message: types.Message, state: FSMContext):
     numder_order = message.text
     result = read_exped.filter_order(df=read_exped.exped, order=numder_order)
+    messages = ''
     for i in range(len(result)):
         text = f'Заказ: *{result[i][0]}*\n' \
                f'Деталь: *{result[i][1]}*\n' \
                f'Кол-во: *{result[i][2]}*\n' \
                f'Дата отгрузки: *{result[i][3]}*\n' \
                f'ТП: *{result[i][5]}*\n' \
-               f'Примечания: *{result[i][4]}*\n'
-        await bot.send_message(message.from_user.id, text=text, parse_mode='Markdown')
-        await state.finish()
+               f'Примечания: *{result[i][4]}*\n' \
+               f'\n'
+        messages += text
+    await bot.send_message(message.from_user.id, text=messages, parse_mode='Markdown')
+    await state.finish()
 
 
 async def my_id(message: types.Message):
