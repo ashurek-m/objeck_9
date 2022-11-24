@@ -73,7 +73,15 @@ async def cancel_handler(message: types.Message, state: FSMContext):
     if current_state is None:
         return
     await state.finish()
-    await message.answer('OK')
+    await message.answer('сброс')
+
+'''
+async def set_default_commands(bot):
+    await bot.set_my_commands([
+        types.BotCommand("start", "Запустить бота"),
+        types.BotCommand("help", "Запустить бота"),
+    ])
+'''
 
 
 @dp.callback_query_handler(Text(startswith='but'), state=None)
