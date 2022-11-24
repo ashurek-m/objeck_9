@@ -43,7 +43,8 @@ def filter_detal(df, detal: str):
                                 'Отметка о выполнении',
                                 'Потенциальные проблемы',
                                 'N° ITEM',
-                                'Приоритет'
+                                'Приоритет',
+                                'Ст-ть, $'
                                 ]].astype({'Индекс RTB': 'int64', 'Кол-во': 'int64', 'N° ITEM': 'int64'})
     inform = df_detal.loc[:, ['Индекс RTB',
                               'Наименование детали',
@@ -51,7 +52,8 @@ def filter_detal(df, detal: str):
                               'Приоритет',
                               'Примечания',
                               'Потенциальные проблемы',
-                              'N° ITEM'
+                              'N° ITEM',
+                              'Ст-ть, $'
                               ]].values
     return inform
 
