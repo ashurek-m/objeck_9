@@ -75,6 +75,7 @@ async def cancel_handler(message: types.Message, state: FSMContext):
     await state.finish()
     await message.answer('сброс')
 
+
 '''
 async def set_default_commands(bot):
     await bot.set_my_commands([
