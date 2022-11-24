@@ -37,6 +37,7 @@ async def detal_filter(message: types.Message, state: FSMContext):
         text = f'Заказ: *{result[i][0]}*\n' \
                f'Деталь: *{result[i][1]}*\n' \
                f'Кол-во: *{result[i][2]}*\n' \
+               f'ITEM: *{result[i][6]}*\n' \
                f'Дата отгрузки: *{result[i][3]}*\n' \
                f'ТП: *{result[i][5]}*\n' \
                f'Примечания: *{result[i][4]}*\n'
@@ -51,6 +52,7 @@ async def order(message: types.Message, state: FSMContext):
         text = f'Заказ: *{result[i][0]}*\n' \
                f'Деталь: *{result[i][1]}*\n' \
                f'Кол-во: *{result[i][2]}*\n' \
+               f'ITEM: *{result[i][6]}*\n' \
                f'Дата отгрузки: *{result[i][3]}*\n' \
                f'ТП: *{result[i][5]}*\n' \
                f'Примечания: *{result[i][4]}*\n'
