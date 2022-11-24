@@ -1,10 +1,12 @@
 from aiogram import types, Dispatcher
 from database import read_exped
 from create_bot import bot, dp
-from keyboards.client_kb import kb_client, kb2_client
+from keyboards.client_kb import kb_client
 from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
+import yaml
+from pathlib import Path
 
 
 class FSMAdmin(StatesGroup):
@@ -13,22 +15,43 @@ class FSMAdmin(StatesGroup):
     order = State()
 
 
+def config():
+    path = Path(__file__).parent.parent / 'params.yaml'
+    with open(path, 'r') as f:
+        return yaml.safe_load(f)
+
+
+access = config()['top_manager']
+
+
 async def command_start(message: types.Message):
     await bot.send_message(chat_id=message.from_user.id, text='Hello', reply_markup=kb_client)
 
 
 async def item_filter(message: types.Message, state: FSMContext):
-    item = int(message.text)
-    result = read_exped.filter_item(df=read_exped.exped, item=item)
-    text = f'Заказ: *{result[0]}*\n' \
-           f'Деталь: *{result[1]}*\n' \
-           f'Кол-во: *{result[2]}*\n' \
-           f'Дата отгрузки: *{result[3]}*\n' \
-           f'ТП: *{result[5]}*\n' \
-           f'Примечания: *{result[4]}*\n'
-    await bot.send_message(message.from_user.id, text=text, parse_mode='Markdown')
-    await state.finish()
-
+    if str(message.from_user.id) not in access:
+        item = int(message.text)
+        result = read_exped.filter_item(df=read_exped.exped, item=item)
+        text = f'Заказ: *{result[0]}*\n' \
+               f'Деталь: *{result[1]}*\n' \
+               f'Кол-во: *{result[2]}*\n' \
+               f'Дата отгрузки: *{result[3]}*\n' \
+               f'ТП: *{result[5]}*\n' \
+               f'Примечания: *{result[4]}*\n'
+        await bot.send_message(message.from_user.id, text=text, parse_mode='Markdown')
+        await state.finish()
+    else:
+        item = int(message.text)
+        result = read_exped.filter_item(df=read_exped.exped, item=item)
+        text = f'Заказ: *{result[0]}*\n' \
+               f'Деталь: *{result[1]}*\n' \
+               f'Кол-во: *{result[2]}*\n' \
+               f'Дата отгрузки: *{result[3]}*\n' \
+               f'ТП: *{result[5]}*\n' \
+               f'Примечания: *{result[4]}*\n' \
+               f'Стоимость: *{round(result[6])}* y.e.\n'
+        await bot.send_message(message.from_user.id, text=text, parse_mode='Markdown')
+        await state.finish()
 
 async def detal_filter(message: types.Message, state: FSMContext):
     numder_detal = message.text
