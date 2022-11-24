@@ -43,8 +43,7 @@ async def detal_filter(message: types.Message, state: FSMContext):
                f'ТП: *{result[i][5]}*\n' \
                f'Примечания: *{result[i][4]}*\n' \
                f'\n'
-        messages += text
-    await bot.send_message(message.from_user.id, text=messages, parse_mode='Markdown')
+        await bot.send_message(message.from_user.id, text=text, parse_mode='Markdown')
     await state.finish()
 
 
@@ -61,8 +60,8 @@ async def order(message: types.Message, state: FSMContext):
                f'ТП: *{result[i][5]}*\n' \
                f'Примечания: *{result[i][4]}*\n' \
                f'\n'
-        messages += text
-    await bot.send_message(message.from_user.id, text=messages, parse_mode='Markdown')
+
+        await bot.send_message(message.from_user.id, text=text, parse_mode='Markdown')
     await state.finish()
 
 
