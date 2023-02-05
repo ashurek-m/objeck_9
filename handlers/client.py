@@ -32,7 +32,8 @@ async def item_filter(message: types.Message, state: FSMContext):
     if str(message.from_user.id) not in access:
         item = int(message.text)
         result = read_exped.filter_item(df=read_exped.exped, item=item)
-        text = f'Заказ: *{result[0]}*\n' \
+        text = f'Цвет: *{result[7]}*\n' \
+               f'Заказ: *{result[0]}*\n' \
                f'Деталь: *{result[1]}*\n' \
                f'Кол-во: *{result[2]}*\n' \
                f'Дата отгрузки: *{result[3]}*\n' \
@@ -43,7 +44,8 @@ async def item_filter(message: types.Message, state: FSMContext):
     else:
         item = int(message.text)
         result = read_exped.filter_item(df=read_exped.exped, item=item)
-        text = f'Заказ: *{result[0]}*\n' \
+        text = f'Цвет: *{result[7]}*\n' \
+               f'Заказ: *{result[0]}*\n' \
                f'Деталь: *{result[1]}*\n' \
                f'Кол-во: *{result[2]}*\n' \
                f'Дата отгрузки: *{result[3]}*\n' \
