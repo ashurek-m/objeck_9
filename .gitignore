@@ -131,3 +131,4 @@ dmypy.json
 .idea/
 
 params.yaml
+test.py
